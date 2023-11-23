@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### POR BRANCH FEATURE ###
-**/*.properties
+#**/*.properties
