@@ -35,11 +35,28 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto){
-        // TODO: agregar validacion de email existente
+
         User user = UserMapper.dtoTouser(userDto);
-        User entitySaved = userRepository.save(user);
-        userDto = UserMapper.userToDto(entitySaved);
-        return userDto;
+
+        // VERIFICACION DE DATOS DUPLICADOS
+        if( !existsEmail(user) ){
+            User entitySaved = userRepository.save(user);
+            userDto = UserMapper.userToDto(entitySaved);
+            return userDto;
+
+        }
+
+        // Devuelvo error en campo con error
+        user.setEmail("ERROR: Mail existente");
+        user.setDni("");
+        user.setAddress("");
+        user.setUsername("");
+        user.setPassword("");
+        user.setCreated_at(null);
+        user.setCreated_at(null);
+        user.setUpdated_at(null);
+
+        return UserMapper.userToDto(user);
 
     }
 

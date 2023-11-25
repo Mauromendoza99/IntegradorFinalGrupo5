@@ -22,8 +22,13 @@ public class UserMapper {
     public static UserDto userToDto(User user){
         UserDto dtoTemp = new UserDto();
         dtoTemp.setUsername(user.getUsername());
-        //dtoTemp.setPassword(user.getPassword());
-        dtoTemp.setPassword("**********");
+
+        if(user.getPassword() != ""){
+            dtoTemp.setPassword("**********");
+        }else{
+            dtoTemp.setPassword("");
+        }
+
         dtoTemp.setId(user.getId());
         dtoTemp.setAddress(user.getAddress());
         dtoTemp.setEmail(user.getEmail());
