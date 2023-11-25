@@ -31,17 +31,16 @@ public class UserService {
 
     public UserDto getUserById(Long id){
         User user = userRepository.findById(id).get();
-        user.setPassword("******");
         return UserMapper.userToDto(user);
     }
 
     public UserDto createUser(UserDto userDto){
         // TODO: agregar validacion de email existente
-        User entity = UserMapper.dtoTouser(userDto);
-        User entitySaved = userRepository.save(entity);
+        User user = UserMapper.dtoTouser(userDto);
+        User entitySaved = userRepository.save(user);
         userDto = UserMapper.userToDto(entitySaved);
-        //user.setPassword("******");
         return userDto;
+
     }
 
     public String deleteUser(Long id){
@@ -54,49 +53,66 @@ public class UserService {
     }
 
     public UserDto updateUser(Long id, UserDto userDto) {
+
+        // Mapeo de usedto a user
+        User user = UserMapper.dtoTouser(userDto);
+
         if (userRepository.existsById(id)){
             User userToModify = userRepository.findById(id).get();
-            // Validar qué datos no vienen en null para setearlos al objeto ya creado
 
-            // Logica del Patch
+            // VALIDACIONES
+            // Username
             if (userDto.getUsername() != null){
-                userToModify.setUsername(userDto.getUsername());
+                userToModify.setUsername(user.getUsername());
             }
 
-            // TODO: agregar validacion de email existente
-            if (userDto.getEmail() != null){
-                userToModify.setEmail(userDto.getEmail());
+            // Mail
+            if (user.getEmail() != null){
+                userToModify.setEmail(user.getEmail());
             }
 
-            if (userDto.getPassword() != null){
-                userToModify.setPassword(userDto.getPassword());
+            // Password
+            if (user.getPassword() != null){
+                userToModify.setPassword(user.getPassword());
             }
 
-            if (userDto.getDni() != null){
-                userToModify.setDni(userDto.getDni());
+            // Dni
+            if (user.getDni() != null){
+                userToModify.setDni(user.getDni());
             }
 
-            if (userDto.getAddress() != null){
-                userToModify.setAddress(userDto.getAddress());
+            // Address
+            if (user.getAddress() != null){
+                userToModify.setAddress(user.getAddress());
             }
+
+            // Birthday
             if (userDto.getBirthday_date() != null){
-                userToModify.setBirthday_date(userDto.getBirthday_date());
+                userToModify.setBirthday_date(user.getBirthday_date());
             }
 
             userToModify.setUpdated_at(LocalDateTime.now());
 
-            User userModified = userRepository.save(userToModify);
+            // VERIFICACION DE DATOS DUPLICADOS
+            if( !existsEmail(user) ){
+                User userModified = userRepository.save(userToModify);
+                return UserMapper.userToDto(userModified);
+            }
 
-            return UserMapper.userToDto(userModified);
         }
 
         return null;
     }
 
-    // Validar que existan usuarios unicos por mail
-    /*
-    public User validateUserByEmail(UserDto dto){
-        return repository.findByEmail(dto.getEmail());
+
+
+    public boolean existsEmail(User user){
+
+        if( userRepository.findByEmail(user.getEmail()) != null ){
+            return true;
+        }
+
+        return false;
     }
-    */
+
 }
