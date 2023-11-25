@@ -21,6 +21,8 @@ public class UserService {
     }
 
     // Methods
+
+
     public List<UserDto> getUsers(){
 
         return userRepository.findAll().stream()
@@ -33,6 +35,7 @@ public class UserService {
         User user = userRepository.findById(id).get();
         return UserMapper.userToDto(user);
     }
+
 
     public UserDto createUser(UserDto userDto){
 
@@ -120,6 +123,8 @@ public class UserService {
 
         return null;
     }
+
+
 
 
 
