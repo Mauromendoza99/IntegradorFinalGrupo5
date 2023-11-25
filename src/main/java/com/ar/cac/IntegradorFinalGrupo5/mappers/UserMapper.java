@@ -23,7 +23,7 @@ public class UserMapper {
         UserDto dtoTemp = new UserDto();
         dtoTemp.setUsername(user.getUsername());
 
-        if(user.getPassword() != ""){
+        if(user.getPassword().length() > 0 ){
             dtoTemp.setPassword("**********");
         }else{
             dtoTemp.setPassword("");
