@@ -7,6 +7,7 @@ import com.ar.cac.IntegradorFinalGrupo5.repositories.TransferRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransferService {
@@ -19,9 +20,10 @@ public class TransferService {
     }
 
 
-    public List<Transfer> getTransfers() {
-        List<Transfer> transfers = repository.findAll();
-        return transfers;
+    public List<TransferDto> getTransfers() {
+        return repository.findAll().stream()
+                .map(TransferMapper::transferToDto)
+                .collect(Collectors.toList());
     }
 
     public TransferDto getTransferById(Long id) {
