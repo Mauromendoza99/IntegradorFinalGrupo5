@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -38,9 +41,10 @@ public class User {
     private Date birthday_date;
 
 
-    // TODO: Refactor
+    @CreationTimestamp
     private LocalDateTime created_at;
 
+    @UpdateTimestamp
     private LocalDateTime updated_at;
 
     // TODO: refactor
