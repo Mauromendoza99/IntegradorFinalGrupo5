@@ -1,6 +1,5 @@
 package com.ar.cac.IntegradorFinalGrupo5.controllers;
 
-import com.ar.cac.IntegradorFinalGrupo5.entities.Transfer;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.TransferDto;
 import com.ar.cac.IntegradorFinalGrupo5.services.TransferService;
 import org.springframework.http.HttpStatus;
@@ -18,22 +17,21 @@ public class TransferController {
     public TransferController(TransferService service) {this.service = service; }
 
     @GetMapping
-    public ResponseEntity<List<Transfer>> getTransfers(){
+    public ResponseEntity<List<TransferDto>> getTransfers(){
         return ResponseEntity.status(HttpStatus.OK).body(service.getTransfers());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<TransferDto> getAccountById(@PathVariable Long id){
+    public ResponseEntity<TransferDto> getTransferById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.getTransferById(id));
     }
 
-    //comento estas lineas para saber cuales otras mapping se pueden agregar
-
-   /* @PostMapping
-    public ResponseEntity<> createAccount(@RequestBody AccountDto account){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
+    @PostMapping
+    public ResponseEntity<TransferDto> makeTransfer(@RequestBody TransferDto dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.makeTransfer(dto));
     }
 
+    /*
     @PutMapping(value="/{id}")
     public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account){
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));

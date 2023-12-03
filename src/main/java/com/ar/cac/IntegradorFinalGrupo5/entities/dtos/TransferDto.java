@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,10 +19,10 @@ import java.time.LocalDateTime;
 
     private BigDecimal amount;
 
-    private String originAccount;
+    private long originAccount;
 
-    private String destinityAccount;
+    private long destinityAccount;
 
-    private LocalDateTime done_at;
+    private Date done_at;
 
 }
