@@ -55,9 +55,6 @@ public class UserService {
         user.setAddress("");
         user.setUsername("");
         user.setPassword("");
-        user.setCreated_at(null);
-        user.setCreated_at(null);
-        user.setUpdated_at(null);
 
         return UserMapper.userToDto(user);
 
@@ -110,8 +107,6 @@ public class UserService {
             if (userDto.getBirthday_date() != null){
                 userToModify.setBirthday_date(user.getBirthday_date());
             }
-
-            userToModify.setUpdated_at(LocalDateTime.now());
 
             // VERIFICACION DE DATOS DUPLICADOS
             if( !existsEmail(user) ){
