@@ -34,3 +34,4 @@ build/
 
 ### POR BRANCH FEATURE ###
 **/*.properties
+pom.xml
