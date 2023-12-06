@@ -4,59 +4,62 @@ import com.ar.cac.IntegradorFinalGrupo5.entities.Employee;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.EmployeeDto;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.LoginDto;
 import com.ar.cac.IntegradorFinalGrupo5.repositories.EmployeeRepository;
-import com.ar.cac.IntegradorFinalGrupo5.response.LoginResponse;
+import com.ar.cac.IntegradorFinalGrupo5.response.LoginRegisterResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
-//    String addEmployee(EmployeeDto employeeDto);
 
-//    LoginResponse loginEmployee(LoginDto loginDto);
     private final EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-//    private PasswordEncoder passwordEncoder;
 
-//    GENERAR UN EMPLOYEE
-    public String addEmployee(EmployeeDto employeeDto) {
+    //    GENERAR UN EMPLOYEE
+    public LoginRegisterResponse addEmployee(EmployeeDto employeeDto) {
         Employee employee = new Employee(
                 employeeDto.getId(),
                 employeeDto.getName(),
                 employeeDto.getEmail(),
                 employeeDto.getPassword()
         );
+        if (employee.getName() != null) {
+            employeeRepository.save(employee);
+            return new LoginRegisterResponse("Register Succes", true);
 
-        employeeRepository.save(employee);
+        } else {
+            return new LoginRegisterResponse("Register Failed", false);
+        }
 
-        return employee.getName();
+
     }
 
-//    VALIDACIONES DE LOGIN
-    public LoginResponse loginEmployee(LoginDto loginDto) {
+    //    VALIDACIONES DE LOGIN
+    public LoginRegisterResponse loginEmployee(LoginDto loginDto) {
         String msg = "";
         Employee employee1 = employeeRepository.findByEmail(loginDto.getEmail());
-        if (employee1 != null){
+        if (employee1 != null) {
             String password = loginDto.getPassword();
 
-            if (employee1.getPassword().equals(loginDto.getPassword())){
+            if (employee1.getPassword().equals(loginDto.getPassword())) {
                 Optional<Employee> employee = employeeRepository.findOneByEmailAndPassword(loginDto.getEmail(), password);
-                if (employee.isPresent()){
-                    return new LoginResponse("Login Succes",true);
+                if (employee.isPresent()) {
+                    return new LoginRegisterResponse("Login Succes", true);
 
-                }else {
-                    return new LoginResponse("Login Failed",false);
+
+                } else {
+                    return new LoginRegisterResponse("Login Failed", false);
                 }
 
-            }else {
-                return new LoginResponse("Password not match",false);
+            } else {
+                return new LoginRegisterResponse("Password not match", false);
             }
 
-        }else {
-            return new LoginResponse("Email not exists",false);
+        } else {
+            return new LoginRegisterResponse("Email not exists", false);
         }
     }
 }
