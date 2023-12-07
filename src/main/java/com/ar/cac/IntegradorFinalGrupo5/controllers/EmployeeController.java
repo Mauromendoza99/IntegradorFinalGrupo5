@@ -32,12 +32,12 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<?> loginEmployee(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> loginEmployee(@RequestBody LoginDto loginDto) {
 
         LoginRegisterResponse loginResponse = employeeService.loginEmployee(loginDto);
         if (!loginResponse.getStatus()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: " + loginResponse.getMessage() + ", Status: " + loginResponse.getStatus());
-        } else return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+        } else return ResponseEntity.status(HttpStatus.OK).body(loginResponse.getMessage() + ", "+ loginResponse.getStatus());
 
     }
 
