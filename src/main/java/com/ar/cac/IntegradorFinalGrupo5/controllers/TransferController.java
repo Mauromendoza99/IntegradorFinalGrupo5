@@ -26,21 +26,22 @@ public class TransferController {
     public ResponseEntity<TransferDto> getAccountById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.getTransferById(id));
     }
+        @PutMapping(value = "/{id}")
+        public String updateFullUser(){
+            return "";
+            @PutMapping(value="/{id}")
+            public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user){
+                return ResponseEntity.status(HttpStatus.OK).body(service.updateUser(id, user));
 
-    //comento estas lineas para saber cuales otras mapping se pueden agregar
+                @DeleteMapping(value = "/{id}")
+                public ResponseEntity<String> deleteUser(@PathVariable Long id){
+                    return ResponseEntity.status(HttpStatus.OK).body(service.deleteUser(id));
+                }
+            }
 
-   /* @PostMapping
-    public ResponseEntity<> createAccount(@RequestBody AccountDto account){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
+            }
+                    @PostMapping
+                        public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto account){
+                            return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
     }
 
-    @PutMapping(value="/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account){
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteAccount(id));
-    }*/
-}
