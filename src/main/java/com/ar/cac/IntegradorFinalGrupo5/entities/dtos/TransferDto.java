@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
     public class TransferDto {
 
-    private long id;
+    private Long id;
 
     private BigDecimal amount;
 
-    private String originAccount;
+    private Long originAccount;
 
-    private String destinityAccount;
+    private Long destinityAccount;
 
     private LocalDateTime done_at;
 

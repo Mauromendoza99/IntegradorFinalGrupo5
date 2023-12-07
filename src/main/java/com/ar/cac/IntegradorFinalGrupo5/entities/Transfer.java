@@ -1,14 +1,11 @@
 package com.ar.cac.IntegradorFinalGrupo5.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Table;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,15 +23,16 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @column(name = "monto")
+    @Column(name = "monto")
     private BigDecimal amount;
 
-    @column(name = "cuenta_Origen")
-    private String originAccount;
+    @Column(name = "cuenta_Origen")
+    private Long originAccount;
 
-    @column(name = "cuenta_Destino")
-    private String destinityAccount;
+    @Column(name = "cuenta_Destino")
+    private Long destinityAccount;
 
-    @column(name = "fecha_transaccion")
+    @CreationTimestamp
+    @Column(name = "fecha_transaccion")
     private LocalDateTime done_at;
 }
