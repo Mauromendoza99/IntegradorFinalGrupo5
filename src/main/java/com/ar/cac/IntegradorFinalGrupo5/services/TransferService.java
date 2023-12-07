@@ -4,6 +4,7 @@ import com.ar.cac.IntegradorFinalGrupo5.entities.Transfer;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.TransferDto;
 import com.ar.cac.IntegradorFinalGrupo5.mappers.TransferMapper;
 import com.ar.cac.IntegradorFinalGrupo5.repositories.TransferRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,4 +31,42 @@ public class TransferService {
         Transfer transf = repository.findById(id).get();
         return TransferMapper.transferToDto(transf);
     }
+
+    @Transactional
+    public TransferDTO performTransfer(TransferDTO dto) {
+        // Comprobar si las cuentas de origen y destino existen
+        Account originAccount = accountRepository.findById(dto.getOrigin())
+                .orElseThrow(() -> new AccountNotFoundException("Account not found with id: " + dto.getOrigin()));
+        Account destinationAccount = accountRepository.findById(dto.getTarget())
+                .orElseThrow(() -> new AccountNotFoundException("Account not found withid: " + dto.getTarget()));
+
+        // Comprobar si la cuenta de origen tiene fondos suficientes
+        if (originAccount.getAmount().compareTo(dto.getAmount()) < 0) {
+            throw new InsufficientFoundsException("Insufficient funds in the account with id: " + dto.getOrigin());
+        }
+
+        // Realizar la transferencia
+        originAccount.setAmount(originAccount.getAmount().subtract(dto.getAmount()));
+        destinationAccount.setAmount(destinationAccount.getAmount().add(dto.getAmount()));
+
+        // Guardar las cuentas actualizadas
+        accountRepository.save(originAccount);
+        accountRepository.save(destinationAccount);
+        // Crear la transferencia y guardarla en la base de datos
+        Transfer transfer = new Transfer();
+        // Creamos un objeto del tipo Date para obtener la fecha actual
+        Date date = new Date();
+
+        // Seteamos el objeto fecha actual en el transferDto
+        transfer.setDate(date);
+        transfer.setOrigin(originAccount.getId());
+        transfer.setTarget(destinationAccount.getId());
+
+        transfer.setAmount(dto.getAmount());
+        transfer = repository.save(transfer);
+
+        // Devolver el DTO de la transferencia realizada
+        return TransferMapper.transferToDto(transfer);
+    }
+
 }

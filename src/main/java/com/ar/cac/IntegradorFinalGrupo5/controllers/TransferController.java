@@ -15,33 +15,26 @@ public class TransferController {
 
     private final TransferService service;
 
-    public TransferController(TransferService service) {this.service = service; }
+    public TransferController(TransferService service) {
+        this.service = service;
+    }
 
+    //    LISTA DE TRANFERENCIAS
     @GetMapping
-    public ResponseEntity<List<Transfer>> getTransfers(){
+    public ResponseEntity<List<TransferDto>> getTransfers() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getTransfers());
     }
 
+    //    TRANFERENCIA POR ID
     @GetMapping(value = "/{id}")
-    public ResponseEntity<TransferDto> getAccountById(@PathVariable Long id){
+    public ResponseEntity<TransferDto> getAccountById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getTransferById(id));
     }
-        @PutMapping(value = "/{id}")
-        public String updateFullUser(){
-            return "";
-            @PutMapping(value="/{id}")
-            public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user){
-                return ResponseEntity.status(HttpStatus.OK).body(service.updateUser(id, user));
 
-                @DeleteMapping(value = "/{id}")
-                public ResponseEntity<String> deleteUser(@PathVariable Long id){
-                    return ResponseEntity.status(HttpStatus.OK).body(service.deleteUser(id));
-                }
-            }
+    @PostMapping
+    public ResponseEntity<TransferDto> makeTransfer(@RequestBody TransferDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.makeTransfer(dto));
 
-            }
-                    @PostMapping
-                        public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto account){
-                            return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
     }
 
+}
