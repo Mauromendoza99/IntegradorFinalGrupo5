@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "account")
+@Table(name = "cuentas")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,10 +34,18 @@ public class Account {
     @Column(name = "monto")
     private BigDecimal amount;
 
+    private Boolean enabled;
+
     @Column(name = "fecha_creacion")
+    @CreationTimestamp
     private LocalDateTime created_at;
 
     @Column(name = "fecha_ult_modificacion")
+    @UpdateTimestamp
     private LocalDateTime update_at;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "userId")
+    private User owner;
 
 }
