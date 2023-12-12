@@ -26,14 +26,20 @@ public class AccountController {
 
     //LISTA DE CUENTAS REGISTRADAS
     @GetMapping
-    public ResponseEntity<List<Account>> getAccounts() {
+    public ResponseEntity<List<AccountDto>> getAccounts() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAccounts());
     }
 
     //CUENTA POR ID
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Account> getAcountById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAcountById(id));
+    public ResponseEntity<String> getAcountById(@PathVariable Long id) {
+        //DEVOLVEMOS UN STRING PARA PODER MOSTRAR SOLOS LOS DATOS MAS RELEVANTES A TRAVES DE UN METODO TOSTRIG Y ATRAPAMOS LA EXCEPTION
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body("Cuenta encontrada: { " + service.getAcountById(id).toString() + " }");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen Cuentas registradas con id: " + id);
+        }
+
     }
 
     //CREAR CUENTA
