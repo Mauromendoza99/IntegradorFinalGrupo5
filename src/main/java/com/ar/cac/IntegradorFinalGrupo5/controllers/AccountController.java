@@ -1,12 +1,10 @@
 package com.ar.cac.IntegradorFinalGrupo5.controllers;
 
-import com.ar.cac.IntegradorFinalGrupo5.entities.Account;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.AccountDto;
-import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.UserDto;
+import com.ar.cac.IntegradorFinalGrupo5.mappers.UserMapper;
+import com.ar.cac.IntegradorFinalGrupo5.repositories.UserRepository;
 import com.ar.cac.IntegradorFinalGrupo5.services.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +16,11 @@ public class AccountController {
 
     //inyección
     private final AccountService service;
+    private final UserRepository userRepository;
 
-    public AccountController(AccountService service) {
+    public AccountController(AccountService service, UserRepository userRepository) {
         this.service = service;
+        this.userRepository = userRepository;
     }
 
 
@@ -44,8 +44,14 @@ public class AccountController {
 
     //CREAR CUENTA
     @PostMapping
-    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto account) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
+    public ResponseEntity<String> createAccount(@RequestBody AccountDto account) {
+        AccountDto act = service.createAccount(account);
+//        CREAMOS UNA VARIABLE Y LE ALMACENAMOS LOS DATOS DEL USUARIO EN FORMATO PARA MOSTRAR EN LA RESPUESTA
+        String usuario;
+        if (act.getOwnerid() != null){
+            usuario = "Datos del Usuario: \n" + UserMapper.userToDto(userRepository.findById(act.getOwnerid()).get()).toString();
+        }else usuario = "";
+        return ResponseEntity.status(HttpStatus.CREATED).body(act.toString() + "\n" + usuario);
     }
 
     //MODIFICA TOTAL Y PARCIALMENTE

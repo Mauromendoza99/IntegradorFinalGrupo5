@@ -1,6 +1,7 @@
 package com.ar.cac.IntegradorFinalGrupo5.services;
 
 import com.ar.cac.IntegradorFinalGrupo5.entities.Account;
+import com.ar.cac.IntegradorFinalGrupo5.entities.User;
 import com.ar.cac.IntegradorFinalGrupo5.entities.dtos.AccountDto;
 import com.ar.cac.IntegradorFinalGrupo5.mappers.AccountMapper;
 import com.ar.cac.IntegradorFinalGrupo5.repositories.AccountRepository;
@@ -51,15 +52,17 @@ public class AccountService {
 
     //    CREA UNA CUENTA
     public AccountDto createAccount(AccountDto account) {
-//        SETEAMOS QUE LA CUENTA SE CREE HABILITADA
-        account.setEnabled(true);
-        account.setAmount(BigDecimal.ZERO);
+
         Account entity = AccountMapper.dtoToAccount(account);
         //CON EL ID QUE RECIBIMOS EN EL JSON, RECUPERAMOS EL USER Y SE LO SETEAMOS A LA CUENTA
-        entity.setOwner(userRepository.findById(account.getOwner()).get());
+        User user = userRepository.findById(account.getOwnerid()).get();
+        entity.setOwner(user);
+        //SETEAMOS QUE LA CUENTA SE CREE HABILITADA
+        entity.setEnabled(true);
+        //SETEAMOS QUE LA CUENTA SE CREE SIN SALDO
+        entity.setAmount(BigDecimal.ZERO);
         Account entiySaved = repository.save(entity);
-        account = AccountMapper.accountToDto(entiySaved);
-        return account;
+        return AccountMapper.accountToDto(entiySaved);
     }
 
     //    BORRA UNA CUENTA

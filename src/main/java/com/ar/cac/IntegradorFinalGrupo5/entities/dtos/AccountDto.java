@@ -2,6 +2,8 @@ package com.ar.cac.IntegradorFinalGrupo5.entities.dtos;
 
 import com.ar.cac.IntegradorFinalGrupo5.entities.User;
 import com.ar.cac.IntegradorFinalGrupo5.entities.enums.AccountType;
+import com.ar.cac.IntegradorFinalGrupo5.mappers.UserMapper;
+import com.ar.cac.IntegradorFinalGrupo5.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +34,12 @@ public class AccountDto {
 
     private LocalDateTime updated_at;
 
-    private Long owner;
+    private Long ownerid;
 
 
     //    UTILIZAMOS UN METODO TOSTRING PARA MOSTRAR SOLO LOS DATOS RELEVANTES EN LAS BUSQUEDAS
     public String toString() {
+//        User usuario = userRepository.findById(this.ownerid).get();
         return "\n Nro de cuenta: " + this.getId() +
                 ",\n Tipo: " + this.getType() +
                 ",\n CBU: " + this.getCbu() +
@@ -44,5 +47,6 @@ public class AccountDto {
                 ",\n Monto: " + this.getAmount() +
                 ",\n Fecha de creación: " + this.getCreated_at() +
                 ",\n Fecha de ultima actualización: " + this.getUpdated_at();
+
     }
 }

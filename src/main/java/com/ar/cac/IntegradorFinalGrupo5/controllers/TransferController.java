@@ -31,14 +31,4 @@ public class TransferController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.makeTransfer(dto));
     }
 
-    /*
-    @PutMapping(value="/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account){
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteAccount(id));
-    }*/
 }
