@@ -55,7 +55,7 @@ public class UserService {
     }
 
 
-    public UserDto createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) throws Exception{
         //SETEAMOS QUE EL USUARIO SE CREE HABILITADO
         userDto.setEnabled(true);
         User user = UserMapper.dtoTouser(userDto);
@@ -86,7 +86,7 @@ public class UserService {
 
     }
 
-    public String deleteUser(Long id) {
+    public String deleteUser(Long id) throws Exception{
 //        BAJA LOGICA, OBTENEMOS EL USUARIO A ELIMINAR Y LE SETEAMOS EL VALOR FALSE EN ENABLED
         User userToDelete = userRepository.findById(id).get();
         if (userRepository.existsById(id)) {

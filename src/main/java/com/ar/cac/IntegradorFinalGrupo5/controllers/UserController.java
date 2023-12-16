@@ -45,10 +45,15 @@ public class UserController {
 
     // POST: Crear usuario
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.
-                status(HttpStatus.CREATED).
-                body(userService.createUser(userDto));
+    public ResponseEntity<String> createUser(@RequestBody UserDto userDto) {
+        try{
+            UserDto user = userService.createUser(userDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado con éxito: \n" + user);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el Usuario: ");
+
+        }
+
     }
 
     @PutMapping(value = "/{id}")
@@ -71,8 +76,10 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.deleteUser(id));
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Falló la eliminación de usuario con id: "+ id);
+        }
     }
 }

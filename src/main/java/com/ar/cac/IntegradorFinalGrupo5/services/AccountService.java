@@ -51,7 +51,7 @@ public class AccountService {
     }
 
     //    CREA UNA CUENTA
-    public AccountDto createAccount(AccountDto account) {
+    public AccountDto createAccount(AccountDto account) throws Exception {
 
         Account entity = AccountMapper.dtoToAccount(account);
         //CON EL ID QUE RECIBIMOS EN EL JSON, RECUPERAMOS EL USER Y SE LO SETEAMOS A LA CUENTA

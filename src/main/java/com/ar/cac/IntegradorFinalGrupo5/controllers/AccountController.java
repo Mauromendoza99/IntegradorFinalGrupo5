@@ -45,24 +45,40 @@ public class AccountController {
     //CREAR CUENTA
     @PostMapping
     public ResponseEntity<String> createAccount(@RequestBody AccountDto account) {
-        AccountDto act = service.createAccount(account);
+        try{
+            AccountDto act = service.createAccount(account);
 //        CREAMOS UNA VARIABLE Y LE ALMACENAMOS LOS DATOS DEL USUARIO EN FORMATO PARA MOSTRAR EN LA RESPUESTA
-        String usuario;
-        if (act.getOwnerid() != null){
-            usuario = "Datos del Usuario: \n" + UserMapper.userToDto(userRepository.findById(act.getOwnerid()).get()).toString();
-        }else usuario = "";
-        return ResponseEntity.status(HttpStatus.CREATED).body(act.toString() + "\n" + usuario);
+            String usuario;
+            if (act.getOwnerid() != null){
+                usuario = "Datos del Usuario: \n" + UserMapper.userToDto(userRepository.findById(act.getOwnerid()).get()).toString();
+            }else usuario = "";
+            return ResponseEntity.status(HttpStatus.CREATED).body(act.toString() + "\n" + usuario);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear la cuenta: " + account);
+        }
+
     }
 
     //MODIFICA TOTAL Y PARCIALMENTE
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
+    public ResponseEntity<String> updateAccount(@PathVariable Long id, @RequestBody AccountDto account) {
+        try{
+            AccountDto accountModified = service.updateAccount(id, account);
+            return ResponseEntity.status(HttpStatus.OK).body("Datos de la cuenta actualizados: \n"+ accountModified);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo actualizar la cuenta "+ id);
+        }
+
     }
 
     //ELIMINAR CUENTA
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteAccount(id));
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(service.deleteAccount(id));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen Cuentas registradas con id: " + id);
+        }
+
     }
 }
