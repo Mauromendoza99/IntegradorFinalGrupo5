@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### POR BRANCH FEATURE ###
+**/*.properties
+pom.xml
